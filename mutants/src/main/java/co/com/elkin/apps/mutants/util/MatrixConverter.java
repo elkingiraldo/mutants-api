@@ -13,7 +13,6 @@ public final class MatrixConverter {
 	}
 
 	private char[][] toHorizontal(final String[] matrix) {
-
 		final char[][] result = new char[size][size];
 
 		for (char i = 0; i < size; i++) {
@@ -24,7 +23,6 @@ public final class MatrixConverter {
 	}
 
 	private char[][] toVertical() {
-
 		final char[][] result = new char[size][size];
 
 		for (char i = 0; i < size; i++) {

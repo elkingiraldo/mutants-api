@@ -12,27 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.elkin.apps.mutants.dto.HumanDTO;
 import co.com.elkin.apps.mutants.exception.APIServiceException;
-import co.com.elkin.apps.mutants.service.IMutantService;
+import co.com.elkin.apps.mutants.service.IMutantDetectionService;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/mutant")
-public class MutantController {
+public class MutantDetectionController {
 
-	private final IMutantService mutantService;
+	private final IMutantDetectionService mutantDetectionService;
 
 	@Autowired
-	public MutantController(final IMutantService mutantService) {
-		super();
-		this.mutantService = mutantService;
+	public MutantDetectionController(final IMutantDetectionService mutantDetectionService) {
+		this.mutantDetectionService = mutantDetectionService;
 	}
 
 	@PostMapping()
 	public ResponseEntity<HumanDTO> create(@RequestBody final HumanDTO human,
 			@RequestHeader(value = "locale", required = false) final String locale) throws APIServiceException {
-
-		final HumanDTO humanResponse = mutantService.validateIfMutant(human);
-
+		final HumanDTO humanResponse = mutantDetectionService.identifyMutant(human);
 		return new ResponseEntity<>(humanResponse, HttpStatus.OK);
 	}
 
