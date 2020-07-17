@@ -27,7 +27,7 @@ public class MutantDetectionController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<HumanDTO> create(@RequestBody final HumanDTO human,
+	public ResponseEntity<HumanDTO> verifyDna(@RequestBody final HumanDTO human,
 			@RequestHeader(value = "locale", required = false) final String locale) throws APIServiceException {
 		final HumanDTO humanResponse = mutantDetectionService.identifyMutant(human);
 		return new ResponseEntity<>(humanResponse, HttpStatus.OK);

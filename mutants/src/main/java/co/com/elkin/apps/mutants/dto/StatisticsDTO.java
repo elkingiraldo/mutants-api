@@ -3,10 +3,8 @@ package co.com.elkin.apps.mutants.dto;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class StatisticsDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,8 +18,8 @@ public class StatisticsDTO implements Serializable {
 		}
 	}
 
-	private Long count_mutant_dna;
-	private Long count_human_dna;
+	private final Long count_mutant_dna;
+	private final Long count_human_dna;
 	private Double ratio = null;
 
 }
