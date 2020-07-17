@@ -19,6 +19,6 @@ public @Data class Human implements Serializable {
 	private Integer id;
 
 	private String[] dna;
-	private boolean hasMutantDna;
+	private boolean mutantDna;
 
 }

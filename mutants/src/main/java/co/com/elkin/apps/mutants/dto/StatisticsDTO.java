@@ -16,7 +16,7 @@ public class StatisticsDTO implements Serializable {
 		this.count_human_dna = count_human_dna;
 
 		if (count_human_dna != 0) {
-			this.ratio = (double) (count_mutant_dna / count_human_dna);
+			this.ratio = (double) count_mutant_dna / (double) count_human_dna;
 		}
 	}
 
