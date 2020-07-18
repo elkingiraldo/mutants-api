@@ -37,6 +37,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 	@Override
 	public HumanDTO identifyMutant(final HumanDTO human) throws APIServiceException {
 
+		validateSquareDnaMatrix(human.getDna());
 		validateInputDna(human);
 
 		final Optional<Human> optionalHuman = humanRepository.findByDna(human.getDna());
@@ -45,6 +46,28 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		}
 
 		return traverseMatrixAllDirections(human);
+	}
+
+	/**
+	 * This method verify if is a valid matrix posted
+	 * 
+	 * @param dna, human DNA to be analyzed
+	 * @throws APIServiceException when no square matrix
+	 */
+	private void validateSquareDnaMatrix(final String[] dna) throws APIServiceException {
+		if (dna == null) {
+			throw new APIServiceException("dna null", APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION);
+		}
+		if (dna.length == 0) {
+			throw new APIServiceException(HttpStatus.BAD_REQUEST.getReasonPhrase(),
+					APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION);
+		}
+		for (final String line : dna) {
+			if (dna.length != line.length()) {
+				throw new APIServiceException(HttpStatus.BAD_REQUEST.getReasonPhrase(),
+						APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION);
+			}
+		}
 	}
 
 	/**
