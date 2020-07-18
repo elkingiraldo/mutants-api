@@ -9,6 +9,12 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
+/**
+ * Entity representing the humans in DB
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @Entity
 public @Data class Human implements Serializable {
 

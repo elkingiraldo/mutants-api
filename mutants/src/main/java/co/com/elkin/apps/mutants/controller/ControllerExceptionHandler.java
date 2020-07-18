@@ -38,6 +38,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	private ReloadableResourceBundleMessageSource messageSource;
 
+	/**
+	 * Handle general exceptions into the system
+	 * 
+	 * @param ex,      Exception throws
+	 * @param request, user's request
+	 * @return {@link ServiceExceptionWrapper} with specific information of the
+	 *         error
+	 */
 	@ExceptionHandler(value = { Exception.class })
 	protected ResponseEntity<ServiceExceptionWrapper> handleUnknownException(final Exception ex,
 			final WebRequest request) {
@@ -55,6 +63,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Handle API exceptions into the system
+	 * 
+	 * @param ex,      Exception throws
+	 * @param request, user's request
+	 * @return {@link ServiceExceptionWrapper} with specific information of the
+	 *         error
+	 */
 	@ExceptionHandler(value = { APIServiceException.class })
 	protected ResponseEntity<ServiceExceptionWrapper> handleAPIServiceException(final APIServiceException ex,
 			final WebRequest request) {
@@ -83,6 +99,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(exception, ex.getCode().getHttpStatus());
 	}
 
+	/**
+	 * Obtain the locale the user required or taking the default value of EN
+	 * 
+	 * @param request, user's request
+	 * @return {@link Locale}
+	 */
 	private Locale getLocale(final WebRequest request) {
 		final String localeString = request.getHeader(LOCALE_HEADER_NAME);
 

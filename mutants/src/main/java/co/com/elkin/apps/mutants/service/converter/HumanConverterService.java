@@ -6,6 +6,13 @@ import org.springframework.stereotype.Service;
 import co.com.elkin.apps.mutants.dto.HumanDTO;
 import co.com.elkin.apps.mutants.entity.Human;
 
+/**
+ * This service converts {@link HumanDTO} in {@link Human} and vice versa with
+ * the help of {@link ModelMapper}
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @Service
 public class HumanConverterService {
 

@@ -6,6 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * This DTO represents a human with his DNA and whether is mutant or not
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @Getter
 @Setter
 @ToString

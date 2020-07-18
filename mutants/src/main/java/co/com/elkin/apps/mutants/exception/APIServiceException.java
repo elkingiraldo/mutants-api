@@ -1,5 +1,11 @@
 package co.com.elkin.apps.mutants.exception;
 
+/**
+ * Service for handling the errors the system throws
+ * 
+ * @author elkin.giraldo
+ *
+ */
 public class APIServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;

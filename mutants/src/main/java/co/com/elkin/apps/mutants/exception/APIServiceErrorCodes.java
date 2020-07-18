@@ -2,6 +2,12 @@ package co.com.elkin.apps.mutants.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Enum with the errors the system handles
+ * 
+ * @author elkin.giraldo
+ *
+ */
 public enum APIServiceErrorCodes implements IAPIServiceErrorMsg {
 
 	GENERAL_EXCEPTION("general.exception", HttpStatus.INTERNAL_SERVER_ERROR),
