@@ -25,7 +25,7 @@ public class StatisticsServiceImpl implements IStatisticsService {
 
 		final long numberOfMutants = allHumans.stream().filter(Human::isMutantDna).count();
 
-		return new StatisticsDTO(numberOfMutants, allHumans.size() - numberOfMutants);
+		return new StatisticsDTO(numberOfMutants, (long) allHumans.size());
 	}
 
 }

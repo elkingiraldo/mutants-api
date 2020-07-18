@@ -26,7 +26,7 @@ public class StatisticsServiceImplTest {
 	@Mock
 	private HumanRepository humanRepository;
 
-	private final StatisticsDTO statisticsResponse = new StatisticsDTO(1L, 2L);
+	private final StatisticsDTO statisticsResponse = new StatisticsDTO(1L, 3L);
 	private final List<Human> humanList = new ArrayList<>();
 
 	private final Human human01 = new Human();

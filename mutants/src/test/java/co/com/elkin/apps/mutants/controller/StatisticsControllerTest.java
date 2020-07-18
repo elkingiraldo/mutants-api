@@ -43,6 +43,9 @@ public class StatisticsControllerTest {
 		final ResponseEntity<StatisticsDTO> statistics = statisticsController.statistics();
 
 		assertEquals(statisticsResponse, statistics.getBody());
+		assertEquals(statisticsResponse.getCount_human_dna(), statistics.getBody().getCount_human_dna());
+		assertEquals(statisticsResponse.getCount_mutant_dna(), statistics.getBody().getCount_mutant_dna());
+		assertEquals(statisticsResponse.getRatio(), statistics.getBody().getRatio());
 	}
 
 }

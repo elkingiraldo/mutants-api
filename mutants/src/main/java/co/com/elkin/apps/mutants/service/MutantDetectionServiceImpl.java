@@ -88,7 +88,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return mutationsCount >= MUTANT_THRESHOLD;
 	}
 
-	private int countMutationsHorizontally(final char[][] matrix, final String[] dna) {
+	int countMutationsHorizontally(final char[][] matrix, final String[] dna) {
 		int mutationsCount = 0;
 
 		for (int i = 0; i < dna.length && mutationsCount < MUTANT_THRESHOLD; i++) {
@@ -100,7 +100,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return mutationsCount;
 	}
 
-	private int countMutationsVertically(final char[][] matrix) {
+	int countMutationsVertically(final char[][] matrix) {
 		int mutationsCount = 0;
 
 		for (int i = 0; i < matrix.length && mutationsCount < MUTANT_THRESHOLD; i++) {
@@ -117,7 +117,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return mutationsCount;
 	}
 
-	private int countMutationsDiagonallyDesc(final char[][] matrix) {
+	int countMutationsDiagonallyDesc(final char[][] matrix) {
 		int mutationsCount = 0;
 
 		for (int i = matrix.length - 4; i > 0 && mutationsCount < MUTANT_THRESHOLD; i--) {
@@ -145,7 +145,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return mutationsCount;
 	}
 
-	private int countMutationsDiagonallyAsc(final char[][] matrix) {
+	int countMutationsDiagonallyAsc(final char[][] matrix) {
 		int mutationsCount = 0;
 
 		for (int i = 3; i < matrix.length && mutationsCount < MUTANT_THRESHOLD; i++) {
@@ -173,7 +173,7 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return mutationsCount;
 	}
 
-	private int countMutations(final char[] line) {
+	int countMutations(final char[] line) {
 		int countMutants = 0;
 		int countEqualsDna = 1;
 
