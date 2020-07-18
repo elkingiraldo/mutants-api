@@ -23,9 +23,9 @@ public class StatisticsServiceImpl implements IStatisticsService {
 	public StatisticsDTO obtainStatistics() {
 		final List<Human> allHumans = humanRepository.findAll();
 
-		final long numberOfMutants = allHumans.stream().filter(Human::isHasMutantDna).count();
+		final long numberOfMutants = allHumans.stream().filter(Human::isMutantDna).count();
 
-		return new StatisticsDTO(numberOfMutants, allHumans.size() - numberOfMutants);
+		return new StatisticsDTO(numberOfMutants, (long) allHumans.size());
 	}
 
 }

@@ -12,10 +12,11 @@ import co.com.elkin.apps.mutants.exception.APIServiceErrorCodes;
 import co.com.elkin.apps.mutants.exception.APIServiceException;
 import co.com.elkin.apps.mutants.repository.HumanRepository;
 import co.com.elkin.apps.mutants.service.converter.HumanConverterService;
-import co.com.elkin.apps.mutants.util.MatrixConverter;
 
 @Service
 public class MutantDetectionServiceImpl implements IMutantDetectionService {
+
+	private static final int MUTANT_THRESHOLD = 2;
 
 	private final HumanRepository humanRepository;
 	private final HumanConverterService humanConverterService;
@@ -30,31 +31,154 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 	@Override
 	public HumanDTO identifyMutant(final HumanDTO human) throws APIServiceException {
 
+		validateInputDna(human);
+
 		final Optional<Human> optionalHuman = humanRepository.findByDna(human.getDna());
-		if (optionalHuman.isPresent() && optionalHuman.get().isHasMutantDna()) {
-			return humanConverterService.toDTO(optionalHuman.get());
-		} else if (optionalHuman.isPresent() && !optionalHuman.get().isHasMutantDna()) {
+		if (optionalHuman.isPresent()) {
+			return humanAlreadyAnalized(optionalHuman.get());
+		}
+
+		return traverseMatrixAllDirections(human);
+	}
+
+	private void validateInputDna(final HumanDTO human) throws APIServiceException {
+		if (human.getDna().length < 4) {
+			handleNotMutant(human);
+		}
+	}
+
+	private HumanDTO humanAlreadyAnalized(final Human human) throws APIServiceException {
+		if (human.isMutantDna()) {
+			return humanConverterService.toDTO(human);
+		} else {
 			throw new APIServiceException(HttpStatus.FORBIDDEN.getReasonPhrase(),
 					APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION);
 		}
-
-		final MatrixConverter converter = new MatrixConverter(human.getDna());
-
-		int mutationsCount = 0;
-		mutationsCount = countMutationsInMatrix(converter.getHorizontal(), mutationsCount);
-		mutationsCount = countMutationsInMatrix(converter.getVertical(), mutationsCount);
-
-		proceedIfNotMutant(human, mutationsCount);
-
-		return proceedIfMutant(human);
 	}
 
-	private int countMutations(final char[] dna) {
+	private HumanDTO traverseMatrixAllDirections(final HumanDTO human) throws APIServiceException {
+
+		int mutationsCount = 0;
+		final char[][] charMatrix = new char[human.getDna().length][human.getDna().length];
+
+		mutationsCount += countMutationsHorizontally(charMatrix, human.getDna());
+		if (foundMutant(mutationsCount)) {
+			return handleMutant(human);
+		}
+
+		mutationsCount += countMutationsVertically(charMatrix);
+		if (foundMutant(mutationsCount)) {
+			return handleMutant(human);
+		}
+
+		mutationsCount += countMutationsDiagonallyDesc(charMatrix);
+		if (foundMutant(mutationsCount)) {
+			return handleMutant(human);
+		}
+
+		mutationsCount += countMutationsDiagonallyAsc(charMatrix);
+		if (!foundMutant(mutationsCount)) {
+			handleNotMutant(human);
+		}
+
+		return handleMutant(human);
+	}
+
+	private boolean foundMutant(final int mutationsCount) {
+		return mutationsCount >= MUTANT_THRESHOLD;
+	}
+
+	int countMutationsHorizontally(final char[][] matrix, final String[] dna) {
+		int mutationsCount = 0;
+
+		for (int i = 0; i < dna.length && mutationsCount < MUTANT_THRESHOLD; i++) {
+			final char[] line = dna[i].toCharArray();
+			mutationsCount += countMutations(line);
+			matrix[i] = line;
+		}
+
+		return mutationsCount;
+	}
+
+	int countMutationsVertically(final char[][] matrix) {
+		int mutationsCount = 0;
+
+		for (int i = 0; i < matrix.length && mutationsCount < MUTANT_THRESHOLD; i++) {
+
+			final char[] line = new char[matrix.length];
+
+			for (int j = 0; j < matrix.length; j++) {
+				line[j] = matrix[j][i];
+			}
+
+			mutationsCount += countMutations(line);
+		}
+
+		return mutationsCount;
+	}
+
+	int countMutationsDiagonallyDesc(final char[][] matrix) {
+		int mutationsCount = 0;
+
+		for (int i = matrix.length - 4; i > 0 && mutationsCount < MUTANT_THRESHOLD; i--) {
+
+			final char[] line = new char[matrix.length];
+
+			for (int j = 0, x = i; x <= matrix.length - 1; j++, x++) {
+				line[j] = matrix[x][j];
+			}
+
+			mutationsCount += countMutations(line);
+		}
+
+		for (int i = 0; i <= matrix.length - 4 && mutationsCount < MUTANT_THRESHOLD; i++) {
+
+			final char[] line = new char[matrix.length];
+
+			for (int j = 0, y = i; y <= matrix.length - 1; j++, y++) {
+				line[j] = matrix[j][y];
+			}
+
+			mutationsCount += countMutations(line);
+		}
+
+		return mutationsCount;
+	}
+
+	int countMutationsDiagonallyAsc(final char[][] matrix) {
+		int mutationsCount = 0;
+
+		for (int i = 3; i < matrix.length && mutationsCount < MUTANT_THRESHOLD; i++) {
+
+			final char[] line = new char[matrix.length];
+
+			for (int j = 0; j <= i; j++) {
+				line[j] = matrix[i - j][j];
+			}
+
+			mutationsCount += countMutations(line);
+		}
+
+		for (int i = 0; i < matrix.length - 4 && mutationsCount < MUTANT_THRESHOLD; i++) {
+
+			final char[] line = new char[matrix.length];
+
+			for (int j = 0; j < matrix.length - i - 1; j++) {
+				line[j] = matrix[matrix.length - j - 1][j + i + 1];
+			}
+
+			mutationsCount += countMutations(line);
+		}
+
+		return mutationsCount;
+	}
+
+	int countMutations(final char[] line) {
 		int countMutants = 0;
 		int countEqualsDna = 1;
 
-		for (int i = 0; i < dna.length - 1; i++) {
-			if (dna[i] == dna[i + 1]) {
+		for (int i = 0; i < line.length - 1 && countMutants < MUTANT_THRESHOLD; i++) {
+			if (line[i] == line[i + 1] && line[i] != '\0') {
 				countEqualsDna++;
 				if (countEqualsDna == 4) {
 					countMutants++;
@@ -67,26 +191,17 @@ public class MutantDetectionServiceImpl implements IMutantDetectionService {
 		return countMutants;
 	}
 
-	private int countMutationsInMatrix(final char[][] matrix, int mutationsCount) {
-		for (final char[] line : matrix) {
-			mutationsCount += countMutations(line);
-		}
-		return mutationsCount;
-	}
-
-	private void proceedIfNotMutant(final HumanDTO human, final int mutationsCount) throws APIServiceException {
-		if (mutationsCount < 2) {
-			human.setHasMutantDna(false);
-			humanRepository.save(humanConverterService.toEntity(human));
-			throw new APIServiceException(HttpStatus.FORBIDDEN.getReasonPhrase(),
-					APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION);
-		}
-	}
-
-	private HumanDTO proceedIfMutant(final HumanDTO human) {
-		human.setHasMutantDna(true);
+	private HumanDTO handleMutant(final HumanDTO human) {
+		human.setMutantDna(true);
 		final Human savedHuman = humanRepository.save(humanConverterService.toEntity(human));
 		return humanConverterService.toDTO(savedHuman);
+	}
+
+	private void handleNotMutant(final HumanDTO human) throws APIServiceException {
+		human.setMutantDna(false);
+		humanRepository.save(humanConverterService.toEntity(human));
+		throw new APIServiceException(HttpStatus.FORBIDDEN.getReasonPhrase(),
+				APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION);
 	}
 
 }

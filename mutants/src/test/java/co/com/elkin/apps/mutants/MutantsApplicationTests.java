@@ -8,6 +8,7 @@ class MutantsApplicationTests {
 
 	@Test
 	void contextLoads() {
+		MutantsApplication.main(new String[] {});
 	}
 
 }

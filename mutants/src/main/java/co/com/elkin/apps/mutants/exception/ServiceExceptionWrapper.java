@@ -30,14 +30,6 @@ public class ServiceExceptionWrapper {
 		this.errorOriginPath = errorOrigin;
 	}
 
-	public ServiceExceptionWrapper(final String errorCode, final String errorMessage, final String errorDetail,
-			final Integer httpStatus) {
-		this.errorCode = errorCode;
-		this.errorMessage = errorMessage;
-		this.errorDetail = errorDetail;
-		this.httpStatus = httpStatus;
-	}
-
 	public ServiceExceptionWrapper(final String errorCode, final String errorMessage, final String errorDetail) {
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
