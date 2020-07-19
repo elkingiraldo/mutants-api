@@ -10,9 +10,11 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import co.com.elkin.apps.mutants.dto.HumanDTO;
 import co.com.elkin.apps.mutants.entity.Human;
+import co.com.elkin.apps.mutants.exception.APIServiceErrorCodes;
 import co.com.elkin.apps.mutants.exception.APIServiceException;
 import co.com.elkin.apps.mutants.repository.HumanRepository;
 import co.com.elkin.apps.mutants.service.converter.HumanConverterService;
@@ -164,7 +166,7 @@ public class MutantDetectionServiceTest {
 		assertEquals(2, countMutationsVertically);
 	}
 
-	@Test(expected = APIServiceException.class)
+	@Test
 	public void shouldThrowsAPIExceptionWhenTraverseMatrixAllDirections() throws APIServiceException {
 		final String[] dna = { "ATGC", "CAGT", "TAGT", "CCCC" };
 
@@ -178,7 +180,12 @@ public class MutantDetectionServiceTest {
 		when(humanRepository.save(humanEntity)).thenReturn(humanEntity);
 		when(humanConverterService.toEntity(humanDTO)).thenReturn(humanEntity);
 
-		mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals(HttpStatus.FORBIDDEN.getReasonPhrase(), apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION, apiException.getCode());
+		}
 	}
 
 	@Test
@@ -273,7 +280,50 @@ public class MutantDetectionServiceTest {
 		assertEquals(traverseMatrixAllDirections.isMutantDna(), humanDTO.isMutantDna());
 	}
 
-	@Test(expected = APIServiceException.class)
+	@Test
+	public void shouldThrowsAPIEXceptionBecauseNullMatrix() throws APIServiceException {
+		final HumanDTO humanDTO = new HumanDTO();
+
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals("dna null", apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION, apiException.getCode());
+		}
+	}
+
+	@Test
+	public void shouldThrowsAPIEXceptionBecauseMatrixSizeZero() throws APIServiceException {
+		final String[] dna = {};
+
+		final HumanDTO humanDTO = new HumanDTO();
+		humanDTO.setDna(dna);
+
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION, apiException.getCode());
+		}
+	}
+
+	@Test
+	public void shouldThrowsAPIEXceptionBecauseNotSquareMatrix() throws APIServiceException {
+		final String[] dna = { "ATGT", "GACC", "ATCG", "ATC" };
+
+		final HumanDTO humanDTO = new HumanDTO();
+		humanDTO.setDna(dna);
+		humanDTO.setMutantDna(false);
+
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_MATRIX_DNA_SIZE_EXCEPTION, apiException.getCode());
+		}
+	}
+
+	@Test
 	public void shouldThrowsAPIEXceptionBecauseOfMatrixSize() throws APIServiceException {
 		final String[] dna = { "ATG", "GCC", "ATC" };
 
@@ -285,7 +335,12 @@ public class MutantDetectionServiceTest {
 		humanEntity.setDna(dna);
 		humanEntity.setMutantDna(false);
 
-		mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals(HttpStatus.FORBIDDEN.getReasonPhrase(), apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION, apiException.getCode());
+		}
 	}
 
 	@Test
@@ -312,7 +367,7 @@ public class MutantDetectionServiceTest {
 		assertEquals(traverseMatrixAllDirections.isMutantDna(), humanDTO.isMutantDna());
 	}
 
-	@Test(expected = APIServiceException.class)
+	@Test
 	public void shouldThrowsAPIExceptionBecauseFoundNotMutantInDB() throws APIServiceException {
 		final String[] dna = { "ATGC", "CAGT", "ATAA", "CCCC" };
 
@@ -329,7 +384,12 @@ public class MutantDetectionServiceTest {
 		when(humanRepository.findByDna(dna)).thenReturn(humanOptional);
 		when(humanConverterService.toDTO(humanEntity)).thenReturn(humanDTO);
 
-		mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		try {
+			mutantDetectionServiceImpl.identifyMutant(humanDTO);
+		} catch (final APIServiceException apiException) {
+			assertEquals(HttpStatus.FORBIDDEN.getReasonPhrase(), apiException.getMessage());
+			assertEquals(APIServiceErrorCodes.HUMAN_IS_NOT_MUTANT_EXCEPTION, apiException.getCode());
+		}
 	}
 
 }

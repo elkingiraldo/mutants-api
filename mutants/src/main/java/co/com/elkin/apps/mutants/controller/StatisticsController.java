@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import co.com.elkin.apps.mutants.dto.StatisticsDTO;
 import co.com.elkin.apps.mutants.service.IStatisticsService;
 
+/**
+ * Controller for handling requests related with statistics
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/stats")
@@ -23,6 +29,13 @@ public class StatisticsController {
 		this.statisticsService = statisticsService;
 	}
 
+	/**
+	 * This method takes GET API request for handling and passing it to correct
+	 * service application layer for searching statistics of the mutants, humans and
+	 * ratio of mutants found
+	 * 
+	 * @return {@link StatisticsDTO}
+	 */
 	@GetMapping
 	public ResponseEntity<StatisticsDTO> statistics() {
 		final StatisticsDTO statistics = statisticsService.obtainStatistics();

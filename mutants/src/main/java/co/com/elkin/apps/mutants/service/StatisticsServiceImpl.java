@@ -9,6 +9,12 @@ import co.com.elkin.apps.mutants.dto.StatisticsDTO;
 import co.com.elkin.apps.mutants.entity.Human;
 import co.com.elkin.apps.mutants.repository.HumanRepository;
 
+/**
+ * Service implementation for handling statistics
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @Service
 public class StatisticsServiceImpl implements IStatisticsService {
 

@@ -4,6 +4,13 @@ import java.io.Serializable;
 
 import lombok.Getter;
 
+/**
+ * This DTO represents the statistics of the service with the information of
+ * mutants, the total humans consulted and the ratio of the mutants found
+ * 
+ * @author elkin.giraldo
+ *
+ */
 @Getter
 public class StatisticsDTO implements Serializable {
 
