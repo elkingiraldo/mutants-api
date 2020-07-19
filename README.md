@@ -60,8 +60,8 @@ $ \c taskmanagerdb;
 The project includes:
 
 - Java documentation into PROJECT_ROOT_PATH/doc path.
-- Swagger documentation (e.g. For docker environment --> `http://localhost:8080/swagger-ui.html`)
-- i18n for responses in spanish or english.
+- Swagger documentation (e.g. For docker environment :arrow_right: `http://localhost:8080/swagger-ui.html`)
+- i18n for responses in spanish:es: or english:us:.
 - Actuator for checking health of application.
 
 ### API request
@@ -98,9 +98,9 @@ Example:
 
 The system will verify that the DNA is not null, contains elements and it is a square matrix.
 
-> :warning: **NOTE 1:** The system does not verify that the entered letters are capitalized or are only A, T, C, G neither. The user needs to guarantee that the input DNA contains only these capital letters. e.g. "AaAA" is not a sequence
+> :warning: The system does not verify that the entered letters are capitalized or are only A, T, C, G neither. The user needs to guarantee that the input DNA contains only these capital letters. :round_pushpin:e.g. "AaAA" is not a sequence
 
-> :warning: **NOTE 2:** If the system finds a sequence with more than 4 consecutive letters, it will identify only one sequence. e.g. With 8 letters "T" --> "TTTTTTTT" is just one sequence.
+> :warning: If the system finds a sequence with more than 4 consecutive letters, it will identify only one sequence. :round_pushpin:e.g. With 8 letters "T" :arrow_right: "TTTTTTTT" is just one sequence.
 
 ### API responses
 The system checks in DB before trying to traverse the matrix and when it finds 2 sequences the algorithm stops for avoiding to do an extra effort in the calculation.
@@ -122,7 +122,7 @@ The system checks in DB before trying to traverse the matrix and when it finds 2
     "ratio": 0.3333333333333333
 }
 ```
-> :warning: **NOTE: The values `count_mutant_dna` and `count_mutant_dna` are not in camel case because of the type of response required for the test.**
+> :warning: The values `count_mutant_dna` and `count_mutant_dna` are not in camel case because of the type of response required for the test.
 
 #### Mutants
 There are 2 different type of responses:
