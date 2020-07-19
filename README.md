@@ -60,7 +60,7 @@ $ \c taskmanagerdb;
 The project includes:
 
 - Java documentation into PROJECT_ROOT_PATH/doc path.
-- Swagger documentation (e.g. For docker environment :arrow_right: `http://localhost:8080/swagger-ui.html`)
+- Swagger documentation (:round_pushpin:e.g. For docker environment :arrow_right: `http://localhost:8080/swagger-ui.html`)
 - i18n for responses in spanish:es: or english:us:.
 - Actuator for checking health of application.
 
