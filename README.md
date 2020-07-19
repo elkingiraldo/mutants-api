@@ -5,7 +5,7 @@ Repository that has the project in charge of knowing whether a human is mutant o
 You should clone this project in your local machine and the PROJECT_ROOT_PATH will be: **(mutants-api/mutants)**
 
 ## Automatic compiling and deploying
-There is a file `start-mutants-api.sh` that compiles and deploys, the project and the DB, into two different docker containers.
+There is a file `start-mutants-api.sh` that compiles and deploys, the project and the DB, into two different docker containers.<br/>
 For executing this file, you need to go into the PROJECT_ROOT_PATH and execute the following command:
 ```
 $ ./start-mutants-api.sh
@@ -28,7 +28,9 @@ $ ./mvnw clean install -P{DESIRED_ENVIRONMENT}
 
 ## Deploying
 The project is dockerized and it has an external Postgres Database dockerized too. For deploying both of them you only need to run the following commands into PROJECT_ROOT_PATH.
+
 The first one will destroy the images generated previusly and the second one will create them again.
+
 The project will always check that the DB is already initialized for starting to deploy the application. You can check this process executing `docker-compose up` instead of `docker-compose up -d`
 ```
 $ docker-compose down -v
@@ -93,7 +95,9 @@ Example:
 }
 
 The system will verify that the DNA is not null, contains elements and it is a square matrix.
+
 **NOTE 1: The system does not verify that the entered letters are capitalized or are only A, T, C, G neither. The user needs to guarantee that the input DNA contains only these capital letters. e.g. "AaAA" is not a sequence**
+
 **NOTE 2: If the system finds a sequence with more than 4 consecutive letters, it will identify only one sequence. e.g. With 8 letters "T" --> "TTTTTTTT" is just one sequence.**
 
 ### API responses
@@ -112,6 +116,7 @@ The system checks in DB before trying to traverse the matrix and when it finds 2
     "count_human_dna": 6,
     "ratio": 0.3333333333333333
 }
+
 **NOTE: The values `count_mutant_dna` and `count_mutant_dna` are not in camel case because of the type of response required for the test.**
 
 #### Mutants
