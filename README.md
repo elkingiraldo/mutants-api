@@ -83,6 +83,7 @@ There is a GET endpoint located in `http://localhost:8080/stats` that returns th
 There is a POST endpoint located in `http://localhost:8080/mutants` that checks whether a human is mutant too. You need to specify the body with an object `HumanDTO` that contains the DNA to be analyzed.
 
 Example:
+```
 {
     "dna": [
         "ATGCGA",
@@ -93,6 +94,7 @@ Example:
         "TCACTG"
     ]
 }
+```
 
 The system will verify that the DNA is not null, contains elements and it is a square matrix.
 
@@ -105,23 +107,27 @@ The system checks in DB before trying to traverse the matrix and when it finds 2
 
 #### Healthcheck
 200 OK with body:
+```
 {
     status: "UP"
 }
+```
 
 #### Statistics
 200 OK with body:
+```
 {
     "count_mutant_dna": 2,
     "count_human_dna": 6,
     "ratio": 0.3333333333333333
 }
-
+```
 **NOTE: The values `count_mutant_dna` and `count_mutant_dna` are not in camel case because of the type of response required for the test.**
 
 #### Mutants
 There are 2 different type of responses:
 - 403 FORBIDDEN, when is a Human:
+```
 {
     "errorCode": "human.is.not.mutant.exception",
     "errorMessage": "This human is not a mutant",
@@ -130,8 +136,10 @@ There are 2 different type of responses:
     "errorOriginPath": "/mutant",
     "errorOriginApp": "mutants-api"
 }
+```
 
 - 200 OK, when is a Mutant:
+```
 {
     "dna": [
         "TTGCxA",
@@ -143,9 +151,11 @@ There are 2 different type of responses:
     ],
     "mutantDna": true
 }
+```
 
 #### Matrix errors
-- 400 BAD_REQUEST, when is not a square matrix or there is not DNA information
+- 400 BAD_REQUEST, when is not a square matrix or there is not DNA information:
+```
 {
     "errorCode": "human.matrix.dna.size.exception",
     "errorMessage": "Check the matrix, it should be a square matrix.",
@@ -154,8 +164,10 @@ There are 2 different type of responses:
     "errorOriginPath": "/mutant",
     "errorOriginApp": "mutants-api"
 }
+```
 
--400 BAD_REQUEST, when the DNA is null
+- 400 BAD_REQUEST, when the DNA is null:
+```
 {
     "errorCode": "human.matrix.dna.size.exception",
     "errorMessage": "Check the matrix, it should be a square matrix.",
@@ -164,6 +176,7 @@ There are 2 different type of responses:
     "errorOriginPath": "/mutant",
     "errorOriginApp": "mutants-api"
 }
+```
 
 
 
