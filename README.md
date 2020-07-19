@@ -14,9 +14,9 @@ $ ./start-mutants-api.sh
 ## Environments
 There are 3 different environments available for compiling and deploying mutants project:
 
-- **dev** :arrow_right: For developing and working in local environment.
-- **docker** :arrow_right: For using the Docker provided images.
-- **prod** :arrow_right: For using DB hosted in AWS.
+- **dev** :arrow_right: For developing and working in local environment. **http://localhost:6969**
+- **docker** :arrow_right: For using the Docker provided images. **http://localhost:8080**
+- **prod** :arrow_right: For using mutant application and DB hosted in AWS. **http://mutantsapplicationapi-env.eba-2pfp3jad.sa-east-1.elasticbeanstalk.com**
 
 The properties of each project are defined on `application-dev.properties`, `application-docker.properties` and `application-prod.properties`
 
@@ -64,6 +64,18 @@ The project includes:
 - i18n for responses in spanish:es: or english:us:.
 - Actuator for checking health of application.
 
+### DB initial information
+In the DB already exists 9 humans analyzed.
+
+There are 4 of this 9 humans that have mutants DNA.
+```
+{
+    "count_mutant_dna": 4,
+    "count_human_dna": 9,
+    "ratio": 0.4444444444444444
+}
+```
+
 ### API request
 #### Headers and parameters
 | header  | value | description |
@@ -74,13 +86,13 @@ The project includes:
 | locale  | es  | If you want a response in spanish  |
 
 #### Healthcheck
-There is a GET endpoint for verifying health check of application: `http://localhost:8080/actuator/health`
+There is a GET endpoint for verifying health check of application: `http://mutantsapplicationapi-env.eba-2pfp3jad.sa-east-1.elasticbeanstalk.com/actuator/health`
 
 #### Statistics
-There is a GET endpoint located in `http://localhost:8080/stats` that returns the state of the system with the total number of humans consulted and the portion of this humans are mutants too.
+There is a GET endpoint located in `http://mutantsapplicationapi-env.eba-2pfp3jad.sa-east-1.elasticbeanstalk.com/stats` that returns the state of the system with the total number of humans consulted and the portion of this humans are mutants too.
 
 #### Mutants
-There is a POST endpoint located in `http://localhost:8080/mutants` that checks whether a human is mutant too. You need to specify the body with an object `HumanDTO` that contains the DNA to be analyzed.
+There is a POST endpoint located in `http://mutantsapplicationapi-env.eba-2pfp3jad.sa-east-1.elasticbeanstalk.com/mutant` that checks whether a human is mutant too. You need to specify the body with an object `HumanDTO` that contains the DNA to be analyzed.
 
 Example:
 ```
