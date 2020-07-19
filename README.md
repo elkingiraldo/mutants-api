@@ -14,9 +14,9 @@ $ ./start-mutants-api.sh
 ## Environments
 There are 3 different environments available for compiling and deploying mutants project:
 
-- **dev** --> For developing and working in local environment.
-- **docker** --> For using the Docker provided images.
-- **prod** --> For using DB hosted in AWS.
+- **dev** :arrow_right: For developing and working in local environment.
+- **docker** :arrow_right: For using the Docker provided images.
+- **prod** :arrow_right: For using DB hosted in AWS.
 
 The properties of each project are defined on `application-dev.properties`, `application-docker.properties` and `application-prod.properties`
 
