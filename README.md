@@ -134,7 +134,7 @@ The system checks in DB before trying to traverse the matrix and when it finds 2
     "ratio": 0.3333333333333333
 }
 ```
-> :warning: The values `count_mutant_dna` and `count_mutant_dna` are not in camel case because of the type of response required for the test.
+> :warning: The values `count_mutant_dna` and `count_human_dna` are not in camel case because of the type of response required for the test.
 
 #### Mutants
 There are 2 different type of responses:
